@@ -41,7 +41,7 @@ public class ProductGetApiServer implements HttpHandler {
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
 		
-		String reqMethod = "GET"; // should use this same method in client request
+		String reqMethod = "GET"; // should use this same method in client requests
 		
 		if(reqMethod.equals(exchange.getRequestMethod())) {
 			

@@ -8,6 +8,7 @@ public class Product {
     private int price;
     private int stock;
 
+    //Parameterised-constructor
     public Product(int id, String name, String category, int price, int stock) {
     	this.id = id;
         this.name = name;

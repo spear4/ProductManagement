@@ -86,7 +86,7 @@ public class ProductServlet extends HttpServlet{
 		
 		PrintWriter getOut = response.getWriter();
 		
-		// Convert products list to JSONArray to send as JSON response // It is easier to parseIt this way
+		// Convert products list to JSONArray to send as JSON response // It is easier to parse-it this way
 		JSONArray productJsonArray = new JSONArray();
 
 		Connection selConn = null;

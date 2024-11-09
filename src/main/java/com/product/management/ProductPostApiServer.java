@@ -42,7 +42,7 @@ public class ProductPostApiServer implements HttpHandler {
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
 		
-		if("POST".equals(exchange.getRequestMethod())) {
+		if("POST".equals(exchange.getRequestMethod())) {//the client request should be same
 		
 			//Reading the request from client
 			InputStream inp = exchange.getRequestBody();

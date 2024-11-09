@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet{
 		//PrintWriters used to return the results to the front end
 		PrintWriter printOut = response.getWriter();
 		
-		//getting input from front end
+		//getting input from front-end
 		String userName = request.getParameter("userName");
 		String passWord = request.getParameter("passWord");
 		
