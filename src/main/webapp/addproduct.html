@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title> PM | Product Dashboard </title>
+    <link rel="stylesheet" href="addproduct.css">
+    <!-- front-endtemplate -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <!-- for bootstrap themes -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- for jQuery Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  </head>
+  <body>
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="product.html">Product View</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Add Product</a>
+            </li>
+        </ul>
+        <form action="" id="productForm"> 
+        <div class="title">Add Products</div>
+            <div class="form-group row" style="padding-top: 20px;">
+              <label for="name" class="col-sm-2 col-form-label">Product Name :</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control name" id="productName" placeholder="product Name atleast of two characters">
+                <p id="productNameError" style="color:red;font-size:11px;padding-top:10px;display:none;" class="error">! Product name is required</p>
+              </div>
+            </div>
+            <div class="form-group row" style="padding-top: 20px;">
+              <label for="Category" class="col-sm-2 col-form-label">Product Category :</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control Category" id="productCategory" placeholder="Electronics, Automobiles . . . ">
+            	<p id="productCategoryError" style="color:red;font-size:13px;display:none;" class="error">! Product category is required.</p>
+              </div>
+            </div>
+            <div class="form-group row" style="padding-top: 20px;">
+              <label for="price" class="col-sm-2 col-form-label">Product Price :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control Price" id="productPrice" placeholder="Only numbers are allowed">
+              	<p id="priceError" style="color:red;font-size:11px;display:none;" class="error">! Please enter a valid price greater than 0.</p>
+              </div>
+            </div>
+            <div class="form-group row" style="padding-top: 20px;">
+              <label for="quantity" class="col-sm-2 col-form-label">Product Quantity :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control quantity" id="productQuantity" placeholder="Only numbers are allowed">
+            	<p id="quantityError" style="color:red;font-size:11px;display:none;" class="error">! Please enter a valid stock quantity (0 or more).</p>
+              </div>
+            </div>
+        </form>
+        <div class="option">
+            <div class="form-group row" style="padding-top: 80px;">
+                <div class="col-sm-20">
+                  <button type="button" class="btn btn-primary" style="width: 100%;" id="addProduct">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    	
+   <script>
+   	
+   	$(document).ready( ()=>{
+   		
+   		$('#addProduct').click( ()=>{
+
+			// alert("button working");
+         	
+         	// Validate input fields
+            var isValid = true;
+    		 
+             // event.preventDefault();
+             const name = $('#productName').val().trim();
+             const category = $("#productCategory").val().trim();
+             const price = $("#productPrice").val().trim();
+             const quantity = $("#productQuantity").val().trim();
+             
+             
+             
+             // Validate Product Name
+             if (name == "") {
+                 $("#productNameError").show();
+                 isValid = false;
+             }
+          
+             // Validate Product Category
+             if (category == "") {
+                 $("#productCategoryError").show();
+                 isValid = false;
+             }
+
+             // Validate Price
+             if (price == "" || isNaN(price) || parseFloat(price) <= 0) {
+                 $("#priceError").show();
+                 isValid = false;
+             }
+
+             // Validate Stock Quantity
+             if (quantity == "" || isNaN(quantity) || parseInt(quantity) < 0) {
+                 $("#quantityError").show();
+                 isValid = false;
+                 
+             }
+
+             // If all fields are valid, proceed with AJAX submission to servlet
+             if (isValid) {
+            	 console.log(name + category + price + quantity);
+				//Form Reset
+            	$("#productForm").trigger("reset");
+            	
+				//Error Message Reset
+         		$('.error').text("");
+				
+				//Struccture the product data
+				var productData = {
+					productName: name,
+                    productCategory: category,
+                    productPrice: price,
+                    productQuantity: quantity
+				};
+				
+                $.ajax({
+                    url: 'http://localhost:8085/get-products', //localhost POST PRODUCT API Url
+                    type: 'POST', // request method same as ProductPostApiServer handle() method
+                    contentType :'application/json',
+                    data: JSON.stringify(productData),
+                    success: (response)=>{
+                     	//console.log(response);
+                    	if (response == 200) {
+                        	alert("Product added successfully!");
+                            // fetchProducts(); // Refresh the product list
+                        }else {
+                        	alert("Failed to insert data");
+                        }
+                     },
+                     error: function() {
+                         alert("An error occurred while adding the product.");
+                     }
+                 });
+             }
+   			
+   		});
+   		
+   	});
+   
+   
+   </script>
+    
+    <!-- for bootstrap themes -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+  </body>
+</html>
