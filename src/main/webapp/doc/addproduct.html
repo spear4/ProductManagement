@@ -126,13 +126,13 @@
 				};
 				
                 $.ajax({
-                    url: 'http://localhost:9001s/postproducts', //localhost POST PRODUCT API Url
+                    url: 'http://localhost:8085/get-products', //localhost POST PRODUCT API Url
                     type: 'POST', // request method same as ProductPostApiServer handle() method
                     contentType :'application/json',
                     data: JSON.stringify(productData),
                     success: (response)=>{
-                     	console.log(response);
-                    	if (response == 201) {
+                     	//console.log(response);
+                    	if (response == 200) {
                         	alert("Product added successfully!");
                             // fetchProducts(); // Refresh the product list
                         }else {

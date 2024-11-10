@@ -23,6 +23,7 @@
             <li class="nav-item" style="padding-left: 840px;">
                 <button type="button" class="btn btn-outline-danger" id="refresh" style="width: 180px;">Refresh</button>
             </li>
+           
           </ul>
       <form action="" id="myForm">
         <div class="title">View Products</div>
@@ -80,55 +81,56 @@
 		
     	 // Function to fetch and display products
     	setTimeout(function() {
-        	$("#refresh").trigger("click");
+        	$("#refresh").trigger('click');
     	},10);
         
     		 
-    	$("#refresh").on("click", ()=>{
+    	$('#refresh').on('click', ()=>{
     		
     		/* alert("asadfd"); */
             $.ajax({
-            	
-                url: "http://localhost:8889/getproducts", // localhost GET PRODUCT API URL
-                type: "GET", // request method same as ProductGetApiServer handle() method
-                success: (response) =>{
+                url: 'http://localhost:8087/get-products', // localhost GET PRODUCT API URL
+                type: 'GET', // request method same as ProductGetApiServer handle() method
+                dataType: 'json',
+                success: (products) =>{
                 	
-                	console.log("Response :");
-                	console.log(response);
+                	console.log(products);
                 	
-                	//empty list
-					$("#listProducts").text("");
-                	
-                	//table id to append data
-                	// const productList = $("#listProducts");
-                	
-                	//parse the json and push the product data into the bootstrap table
-                	$.each(response, (index, product)=>{
-                		
-                		//create each row for each product data
-                		var row = $("<tr></tr>");
-                		
-                		//append the product data to the row
-                		row.append("<th scope='row'>" + product.id + "</th>");
-                		row.append("<td>" + product.name + "</td>");
-                		row.append("<td>" + product.category + "</td>");
-                		row.append("<td>" + product.price + "</td>");
-                		row.append("<td>" + product.quantity + "</td>");
-                		
-                		//appedn the row to the table body
-                		$("#listProducts").append(row);
-                		
-                	});
-                	
-                	alert("Product List Updated");
+                	var responseJSON = products;
+					
+					if(typeof responseJSON == 'object'){			
+						
+						const productList = $("#listProducts");
+			            productList.empty(); //emptying the list to show the Updated product list
+						
+            			$.each(responseJSON, (key, value) => {
+            				
+            				var productId = value.productId;
+            				var productName = value.productName;
+            				var productCategory = value.productCategory;
+            				var productPrice = value.productPrice;
+            				var productQuantity = value.productQuantity;
+
+            				productList.append("<tr><th scope='row'>" + productId + "</th>");
+            				productList.append("<td>" + productName + "</td>");
+            				productList.append("<rd>" + productCategory + "</td>");
+            				productList.append("<td> " + productPrice + "</td>");
+            				productList.append("<td>" + productQuantity + "</td></tr>");
+            				
+            			});
+            			
+					}else{
+						
+						alert("Not a valid JSON");
+						
+					}
 					
                 },
                 error: (xhr, status, error)=> {
-                	
-                	console.error("AJAX request failed: " + status + ", " + error);
-                    // $("#listProducts").html("<p>Failed to fetch products. Please try again later.</p>");
-                    alert("Some Error While Processing your request. ! Please try again later");
-                    
+                	/* console.log('Error fetching products:' + error);
+                	console.log('Error Status:' + status);
+                	console.log('Error Xhr:' + xhr); */
+                    $('#productList').html('<p>Failed to fetch products. Please try again later.</p>');
                 }
             });
 

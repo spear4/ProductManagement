@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title> PM | Login </title>
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
   </head>
   <body>
     <div class="container">
@@ -14,17 +16,15 @@
         <div class="input-box underline">
         	<input type="text" placeholder="Enter Your Email" id="userName" required>
           	<div class="underline"></div>
-			  <p style="color:red;font-size:12px;display:none;" id="emailEmpty">! Email cannot be empty</p>
-          	<p style="color:red;font-size:12px;display:none;" id="emailNotValid">! Please provide valid email</p>
+          	<p style="color:red;font-size:12px" id="emailNotValid">! Please provide valid email</p>
         </div>
         <div class="input-box" style="margin-top:20px; position:relative">
           <input type="password" placeholder="Enter Your Password" id="passWord" required>
           	<i class="far fa-eye" id="togglePassword" style="color:#c42626; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
           <div class="underline"></div>
-          	<p style="color:red;font-size:12px;display:none;" id="passEmpty">! Password cannot be empty</p>
-          	<p style="color:red;font-size:12px;display:none;" id="passShort">! Password must contain 8 or more characters</p>
+          	<p style="color:red;font-size:12px" id="passEmpty">! Password cannot be empty</p>
         </div>
-        <div class="input-box button" style="margin-top: 40px;">
+        <div class="input-box button">
           <button type="button" name="" id="login" class="contbut">Continue</button>
         </div>
       </form>
@@ -34,6 +34,10 @@
     <script>
     	
     $(document).ready( ()=>{
+    		
+    		//Email valid check, making it hidden
+    		$("#emailNotValid").hide();
+    		$("#passEmpty").hide();
     		
     		var emailCheck = 0;
     		
@@ -62,11 +66,6 @@
         	$('#passWord').on('keyup', ()=>{
             	$("#passEmpty").hide();
             });
-
-        	//Email prompt hiding
-        	$('#userName').on('keyup', ()=>{
-            	$("#emailEmpty").hide();
-            });
         	
         	//password view and hide
     		// <!---Start--->
@@ -90,37 +89,29 @@
         		if(user != ""){
         			if(pass != ""){
             			//console.log(user + " " + pass);
-						if(pass.length >= 8){
-							
-    						$("#passShort").hide();
-							
-            				$.ajax({
-            					type:'POST',
-            					url:'LoginServlet',
-            					data:{
-            						userName : user,
-            						passWord : pass
-            					},
-            					success: (response)=>{
-            						if(response == "Not a User"){
-            							alert("You are not registered User");
-            						}else if (response == "Password Mismatching"){
-            							alert("Password not matching");
-            						}else if(response == "Welcome"){
-            							window.location.href = "product.html";	
-            						}	
-            					}
-            				});
-
-						}else{
-    						$("#passShort").show();
-						}        				
+            			$.ajax({
+            				type:'POST',
+            				url:'LoginServlet',
+            				data:{
+            					userName : user,
+            					passWord : pass
+            				},
+            				success: (response)=>{
+            					if(response == "Not a User"){
+            						alert("You are not registered User");
+            					}else if (response == "Password Mismatching"){
+            						alert("Password not matching");
+            					}else if(response == "Welcome"){
+            						window.location.href = "product.html";	
+            					}	
+            				}
+            			});        				
         			}else{
         				$("#passEmpty").show();
         			}
         			
         		}else{
-					$("#emailEmpty").show();
+        			alert("Email Cannot be empty");
         		}
         		
         	});
