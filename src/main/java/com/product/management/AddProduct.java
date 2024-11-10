@@ -12,48 +12,63 @@ public class AddProduct {
 	static final String dbUser = "postgres";
 	static final String dbPass = "postql";
 	
-	private int addProduct(Product product) {
+	public boolean addProduct(String name, String category, int price, int quantity) {
 		
-		int row = 0;
-	
-		//db connection parameters
 		Connection inCon = null;
-		PreparedStatement inpPrepStmt = null;
-		
-		//Insert Query
-		String inQuery = "INSERT INTO ProductData(productname, productcategory, productprice, productquantity)"
-				+ "VALUES (?, ?, ?, ?)";
+		PreparedStatement inStmt = null;
 		
 		try {
 			
-			//establish connection
-			inCon = DriverManager.getConnection(dbUrl);
-			inpPrepStmt = inCon.prepareStatement(inQuery);
+			//db Connection establishment
+			inCon = DriverManager.getConnection(dbUrl, dbUser, dbPass);
 			
-			//returns row count
-			row = inpPrepStmt.executeUpdate();			
+			//insert Query
+			String inQuery = "INSERT INTO ProductData(productname, productcategory, productprice, productquantity)"
+					+ "VALUES (?, ?, ?, ?)";
 			
-		} catch (Exception e) {
+			//Adding values via Prepared Statement to avoid SQL injection
+			inStmt = inCon.prepareStatement(inQuery);
+			inStmt.setString(1, name);
+			inStmt.setString(2, category);
+			inStmt.setInt(3, price);
+			inStmt.setInt(4, quantity);
+			
+			//Check for the insertion
+			int rows = inStmt.executeUpdate();
+			
+			//return the response to the ProductAddServer
+			if(rows > 0) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		} catch (SQLException e) {
 
 			e.printStackTrace();
+			return false;
 			
 		}finally {
+				
+				//Closing the resources
+				try {
+					
+					if(inStmt != null){
+						inStmt.close();
+					}
+					
+					if(inCon != null) {
+						inCon.close();
+					}
+					
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+					
+				}
 			
-			// Ensuring resources are closed
-            try {
-                if (inpPrepStmt != null) {
-                	inpPrepStmt.close();
-                }
-                if (inCon != null) {
-                	inCon.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            
 		}
-		
-		return row;
+	
 	}
 
 }

@@ -37,36 +37,7 @@
               </tr>
             </thead>
             <tbody id="listProducts">
-            
-            <!-- For Sample view -->
-           <tr>
-            	<th scope="row">1</th>
-            	<td>OnePlus 11R</td>
-            	<td>Mobiles</td>
-            	<td>45000</td>
-            	<td>800</td>
-            </tr>
-           <tr>
-            	<th scope="row">2</th>
-            	<td>Realme G3</td>
-            	<td>Mobiles</td>
-            	<td>25000</td>
-            	<td>200</td>
-            </tr>
-           <tr>
-            	<th scope="row">3</th>
-            	<td>Samsung A51</td>
-            	<td>Mobiles</td>
-            	<td>45000</td>
-            	<td>1000</td>
-            </tr>
-           <tr>
-            	<th scope="row">4</th>
-            	<td>Nokia 1100</td>
-            	<td>Mobiles</td>
-            	<td>1500</td>
-            	<td>20000</td>
-            </tr>
+            	<!-- Product will appended here -->
             </tbody>
           </table>
       </form>
@@ -81,7 +52,7 @@
     	 // Function to fetch and display products
     	setTimeout(function() {
         	$("#refresh").trigger("click");
-    	},10);
+    	});
         
     		 
     	$("#refresh").on("click", ()=>{
@@ -92,9 +63,6 @@
                 url: "http://localhost:8889/getproducts", // localhost GET PRODUCT API URL
                 type: "GET", // request method same as ProductGetApiServer handle() method
                 success: (response) =>{
-                	
-                	console.log("Response :");
-                	console.log(response);
                 	
                 	//empty list
 					$("#listProducts").text("");
@@ -126,7 +94,6 @@
                 error: (xhr, status, error)=> {
                 	
                 	console.error("AJAX request failed: " + status + ", " + error);
-                    // $("#listProducts").html("<p>Failed to fetch products. Please try again later.</p>");
                     alert("Some Error While Processing your request. ! Please try again later");
                     
                 }
