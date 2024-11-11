@@ -46,8 +46,6 @@
     <script>
     	
     $(document).ready( ()=>{
-    	
-    	alert("Welcome");
 		
     	 // Function to fetch and display products
     	setTimeout(function() {
@@ -60,7 +58,7 @@
     		/* alert("asadfd"); */
             $.ajax({
             	
-                url: "http://localhost:8889/getproducts", // localhost GET PRODUCT API URL
+                url: "http://localhost:9002/getproducts", // localhost GET PRODUCT API URL
                 type: "GET", // request method same as ProductGetApiServer handle() method
                 success: (response) =>{
                 	

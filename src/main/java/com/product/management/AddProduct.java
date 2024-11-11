@@ -54,10 +54,11 @@ public class AddProduct {
 				try {
 					
 					if(inStmt != null){
+	
 						inStmt.close();
 					}
-					
 					if(inCon != null) {
+						
 						inCon.close();
 					}
 					

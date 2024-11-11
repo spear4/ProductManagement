@@ -18,11 +18,11 @@ public class ProductAddServer implements HttpHandler {
 	public static void main(String[] args) throws IOException {
 		
 		//Creating a HttpServer 
-		HttpServer postServer = HttpServer.create(new InetSocketAddress(9001), 0); // adding listener port and backlog
+		HttpServer postServer = HttpServer.create(new InetSocketAddress(9003), 0); // adding listener port and backlog
 		postServer.createContext("/postproducts", new ProductAddServer()); // // creating an end-point to access this ProductPostApiServer
 		postServer.setExecutor(null);
 		postServer.start(); //start the server
-		System.out.println("Product Post API Listening at port 9001...");
+		System.out.println("Product Post API Listening at port 9003...");
 		
 	}
 
